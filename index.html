@@ -1,0 +1,102 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.6/p5.js"></script>
+
+    <script>
+        var x = [];
+        var y = [];
+        var radius = 10
+        var xspd = [];
+        var yspd = [];
+        var c = [];
+
+        function setup() {
+
+            createCanvas(400, 400);
+
+        }
+
+        function draw() {
+
+            background(0);
+
+            for (var i = 0; i < x.length; i++) {
+                noStroke();
+                fill(c[i]);
+                ellipse(x[i], y[i], radius * 2, radius * 2);
+            }
+
+            // update the position based on speed
+            for (var i = 0; i < x.length; i++) {
+                x[i] = x[i] + xspd[i];
+                y[i] = y[i] + yspd[i];
+            }
+
+            // check collision with left/right wall
+            for (var i = 0; i < x.length; i++) {
+
+                if ((xspd[i] > 0 && x[i] >= width - radius) || (xspd[i] < 0 && x[i] <= radius)) {
+                    xspd[i] = xspd[i] * -1;
+                }
+            }
+
+            // check collision with top/bottom wall
+            for (var i = 0; i < x.length; i++) {
+
+                if ((yspd[i] > 0 && y[i] >= height - radius) || (yspd[i] < 0 && y[i] <= radius)) {
+                    yspd[i] = yspd[i] * -1;
+                }
+            }
+
+            // colour fades
+
+            for (var i = 0; i < x.length; i++) {
+                c[i]--;
+            }
+        }
+
+        /*      function mousePressed() {
+                mx1 = mouseX;
+                my1 = mouseY;
+
+
+
+              }
+
+              function mouseReleased() {
+                mx2 = mouseX;
+                my2 = mouseY;
+
+
+                if (x.length < 100) {
+                    x[x.length] = mouseX;
+                    y[y.length] = mouseY;
+                    xspd[xspd.length] = (mx2 - mx1) / 30;
+                    yspd[yspd.length] = (my2 - my1) / 30;
+                }
+              } */
+
+        function mouseMoved() {
+
+            if (distance(mouseX, pmouseX, mouseY, pmouseY) > radius*2) {
+
+                x[x.length] = mouseX;
+                y[y.length] = mouseY;
+                xspd[xspd.length] = (mouseX - pmouseX) / 10;
+                yspd[yspd.length] = (mouseY - pmouseY) / 10;
+                c[c.length] = 255;
+            }
+        }
+
+        function distance(x1, y1, x2, y2) {
+            var dx = x1 - x2;
+            var dy = y1 - y2;
+            var d = sqrt(dx * dx + dy * dy);
+            return d;
+        }
+    </script>
+</head>
+
+</html>
